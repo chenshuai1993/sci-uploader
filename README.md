@@ -1,5 +1,10 @@
 ## 文件上传工具类
 
+<h1 align="center">sci-uploader</h1>
+<p align="center">:rainbow:文件上传组件。</p>
+
+![StyleCI build status](https://github.styleci.io/repos/742030122/shield)
+
 ### 介绍
 1. 支持文件分片上传
 2. 支持服务器文件存储；通过实现FileStorage接口，可自定义文件存储方式
