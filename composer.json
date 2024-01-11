@@ -1,0 +1,21 @@
+{
+    "name": "chenshuai1993/sci-uploader",
+    "minimum-stability": "dev",
+    "description": "文件上传工具: 上传、分片上传、秒传、断点续传等",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Chenshuai1993\\SciUploader\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "陈帅帅",
+            "email": "chen.shuaishuai@scimall.org.cn"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^10.5",
+        "mockery/mockery": "^1.6"
+    }
+}
