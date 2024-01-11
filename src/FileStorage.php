@@ -21,17 +21,11 @@ class FileStorage implements StorageInterface
         }
     }
 
-    /**
-     * @return string|null
-     */
     public function getUploadDir(): ?string
     {
         return $this->uploadDir;
     }
 
-    /**
-     * @param string|null $uploadDir
-     */
     public function setUploadDir(?string $uploadDir): void
     {
         $this->uploadDir = $uploadDir;
@@ -54,12 +48,13 @@ class FileStorage implements StorageInterface
     }
 
     /**
-     * 保存文件
-     * @param string $fileName 文件名
-     * @param string $fileHash 文件哈希值
-     * @param string $filePath 文件路径
-     * @param array $extendParams 文件扩展参数数组
-     * @return array
+     * 保存文件.
+     *
+     * @param string $fileName     文件名
+     * @param string $fileHash     文件哈希值
+     * @param string $filePath     文件路径
+     * @param array  $extendParams 文件扩展参数数组
+     *
      * @throws InvalidArgumentException
      */
     public function save(string $fileName, string $fileHash, string $filePath, array $extendParams = []): array
@@ -68,22 +63,22 @@ class FileStorage implements StorageInterface
         $uploadDir = rtrim($this->getUploadDir(), DIRECTORY_SEPARATOR);
         $storageDir = rtrim($this->getStorageDir(), DIRECTORY_SEPARATOR);
         if (empty($uploadDir)) {
-            throw new InvalidArgumentException(InvalidArgumentException::UPLOAD_PATH_NOT_CONFIG); //文件上传路径未配置
+            throw new InvalidArgumentException(InvalidArgumentException::UPLOAD_PATH_NOT_CONFIG); // 文件上传路径未配置
         }
         if (empty($storageDir)) {
-            throw new InvalidArgumentException(InvalidArgumentException::STORAGE_PATH_NOT_CONFIG); //文件存储路径未配置
+            throw new InvalidArgumentException(InvalidArgumentException::STORAGE_PATH_NOT_CONFIG); // 文件存储路径未配置
         }
         if (empty($fileName)) {
-            throw new InvalidArgumentException(InvalidArgumentException::FILE_NAME_IS_EMPTY); //文件名称为空
+            throw new InvalidArgumentException(InvalidArgumentException::FILE_NAME_IS_EMPTY); // 文件名称为空
         }
         if (empty($fileHash)) {
-            throw new InvalidArgumentException(InvalidArgumentException::FILE_HASH_IS_EMPTY); //文件hash为空
+            throw new InvalidArgumentException(InvalidArgumentException::FILE_HASH_IS_EMPTY); // 文件hash为空
         }
         if (empty($filePath)) {
-            throw new InvalidArgumentException(InvalidArgumentException::FILE_PATH_IS_EMPTY); //文件路径为空
+            throw new InvalidArgumentException(InvalidArgumentException::FILE_PATH_IS_EMPTY); // 文件路径为空
         }
 
-        $storagePath = $storageDir . DIRECTORY_SEPARATOR . $fileHash;
+        $storagePath = $storageDir.DIRECTORY_SEPARATOR.$fileHash;
         if (!file_exists($storageDir)) {
             mkdir($storageDir, 0777, true);
             chmod($storageDir, 0777);
@@ -95,12 +90,11 @@ class FileStorage implements StorageInterface
         return $result;
     }
 
-
     /**
-     * 删除指定的文件
+     * 删除指定的文件.
      *
      * @param string $fileHash 文件的哈希值
-     * @return array
+     *
      * @throws InvalidArgumentException
      */
     public function delete(string $fileHash): array
@@ -109,16 +103,16 @@ class FileStorage implements StorageInterface
         $uploadDir = rtrim($this->getUploadDir(), DIRECTORY_SEPARATOR);
         $storageDir = rtrim($this->getStorageDir(), DIRECTORY_SEPARATOR);
         if (empty($uploadDir)) {
-            throw new InvalidArgumentException(InvalidArgumentException::UPLOAD_PATH_NOT_CONFIG); //文件上传路径未配置
+            throw new InvalidArgumentException(InvalidArgumentException::UPLOAD_PATH_NOT_CONFIG); // 文件上传路径未配置
         }
         if (empty($storageDir)) {
-            throw new InvalidArgumentException(InvalidArgumentException::STORAGE_PATH_NOT_CONFIG); //文件存储路径未配置
+            throw new InvalidArgumentException(InvalidArgumentException::STORAGE_PATH_NOT_CONFIG); // 文件存储路径未配置
         }
         if (empty($fileHash)) {
-            throw new InvalidArgumentException(InvalidArgumentException::FILE_HASH_IS_EMPTY); //文件hash为空
+            throw new InvalidArgumentException(InvalidArgumentException::FILE_HASH_IS_EMPTY); // 文件hash为空
         }
 
-        $storagePath = $storageDir . DIRECTORY_SEPARATOR . $fileHash;
+        $storagePath = $storageDir.DIRECTORY_SEPARATOR.$fileHash;
 
         if (!file_exists($storagePath)) {
             return $result;
@@ -129,12 +123,13 @@ class FileStorage implements StorageInterface
         return $result;
     }
 
-
     /**
-     * 根据文件的MD5值查找并返回对应的文件信息
+     * 根据文件的MD5值查找并返回对应的文件信息.
      *
      * @param string $fileHash 文件的MD5值
+     *
      * @return array|mixed[] 文件信息数组，如果找不到文件则返回空数组
+     *
      * @throws InvalidArgumentException
      */
     public function findByFileMd5(string $fileHash): array
@@ -142,16 +137,16 @@ class FileStorage implements StorageInterface
         $uploadDir = rtrim($this->getUploadDir(), DIRECTORY_SEPARATOR);
         $storageDir = rtrim($this->getStorageDir(), DIRECTORY_SEPARATOR);
         if (empty($uploadDir)) {
-            throw new InvalidArgumentException(InvalidArgumentException::UPLOAD_PATH_NOT_CONFIG); //文件上传路径未配置
+            throw new InvalidArgumentException(InvalidArgumentException::UPLOAD_PATH_NOT_CONFIG); // 文件上传路径未配置
         }
         if (empty($storageDir)) {
-            throw new InvalidArgumentException(InvalidArgumentException::STORAGE_PATH_NOT_CONFIG); //文件存储路径未配置
+            throw new InvalidArgumentException(InvalidArgumentException::STORAGE_PATH_NOT_CONFIG); // 文件存储路径未配置
         }
         if (empty($fileHash)) {
-            throw new InvalidArgumentException(InvalidArgumentException::FILE_HASH_IS_EMPTY); //文件hash为空
+            throw new InvalidArgumentException(InvalidArgumentException::FILE_HASH_IS_EMPTY); // 文件hash为空
         }
 
-        $storagePath = $storageDir . DIRECTORY_SEPARATOR . $fileHash;
+        $storagePath = $storageDir.DIRECTORY_SEPARATOR.$fileHash;
 
         if (!file_exists($storagePath)) {
             return [];
@@ -161,6 +156,4 @@ class FileStorage implements StorageInterface
             'file' => file_get_contents($storagePath),
         ];
     }
-
-
 }
