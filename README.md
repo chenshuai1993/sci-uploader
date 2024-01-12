@@ -19,6 +19,21 @@ composer require chenshuai1993/sci-uploader -vvv
 ### 使用
 
 ```php
+curl --location 'http://localhost:63342/codes/SciUploaderTest/index.php?_ijt=ddjo6iiqjhs98oegpuemuudcqb' \
+--header 'Cookie: Phpstorm-882e4b99=9270011a-ce9c-46c9-ad5e-aaf5038df465' \
+--form 'file=@"xxxxx/chunks/chunk_1"' \
+--form 'file_hash="xxx"' \
+--form 'part_number="2"' \
+--form 'part_total="2"' \
+--form 'file_name="tank99a.mp4"'
+```
+
+```php
+use Chenshuai1993\SciUploader\FileStorage;
+use Chenshuai1993\SciUploader\MultiPartUpload;
+
+//前端表单文件使用字段:  file
+
 //定义分片文件上传路径
 $upload ='./upload';
 //定义合并后文件存储路径
