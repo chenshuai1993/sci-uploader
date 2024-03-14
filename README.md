@@ -19,50 +19,53 @@ composer require chenshuai1993/sci-uploader -vvv
 ### 使用
 
 ```php
-curl --location 'http://localhost:63342/codes/SciUploaderTest/index.php?_ijt=ddjo6iiqjhs98oegpuemuudcqb' \
+curl --location 'http://localhost:63342/codes/SciUploaderTest/index.php?_ijt=ghfnji28vsoaqf1n3h5375b173&_ij_reload=RELOAD_ON_SAVE' \
 --header 'Cookie: Phpstorm-882e4b99=9270011a-ce9c-46c9-ad5e-aaf5038df465' \
---form 'file=@"xxxxx/chunks/chunk_1"' \
---form 'file_hash="xxx"' \
+--form 'file=@"/Users/cs/Documents/chenshuai/sci/codes/SciUploaderTest/chunks/chunk_1"' \
+--form 'file_name="tank99a.mp4"' \
+--form 'file_hash="test"' \
 --form 'part_number="2"' \
---form 'part_total="2"' \
---form 'file_name="tank99a.mp4"'
+--form 'part_total="2"'
 ```
+
+![img.png](img.png)
 
 ```php
 use Chenshuai1993\SciUploader\FileStorage;
 use Chenshuai1993\SciUploader\MultiPartUpload;
 
-//前端表单文件使用字段:  file
+//前端表单字段使用 file
+$fileName = $_POST['file_name']; //文件名称
+$fileHash = $_POST['file_hash']; //文件哈希值
+$partNumber = $_POST['part_number']; //分片号
+$partTotal = $_POST['part_total'];  //分片总数
 
-//定义分片文件上传路径
-$upload ='./upload';
-//定义合并后文件存储路径
-$storageDir ='./storage';
-//声明文件存储类 && 声明分片上传类
-$uploader = new MultiPartUpload(new FileStorage($upload, $storageDir));
+$uploadDir ='./upload';  //文件上传路径
+$storageDir ='./storage'; //文件存储路径
+$uploader = new MultiPartUpload(new FileStorage($uploadDir, $storageDir));
 try {
-    $fileName = "xxx.mp4";
-    //上传分片
+    //文件切片上传
     $uploader->uploadPart($fileName, $fileHash, $partNumber);
-    //计算分片数量是否和总数一致
     $count = $uploader->countParts($fileName, $fileHash);
     if ($count == $partTotal){
-        //合并分片文件
         $uploader->mergePartsToFile($fileName, $fileHash, $partTotal);
-        //完成分片上传(可选)
         $uploader->completeMultipartUpload(function (){
             //这里有个闭包函数、执行完成后的操作
+            echo '所有的切片都执行完了';
         });
     }
-    
-    //判断是否存在文件
-    $uploader->getFileByHash($fileHash);
 
-    //删除文件
-    $uploader->deleteFileByHash($fileHash);
+    ##其他
+    //秒传验证文件是否已上传
+    $resp = $uploader->getFileByHash($fileHash);
+    //Array ( [file] => ./upload/test/tank99a.mp4 ) || Array ( )
+
+    //删除上传文件
+    $resp = $uploader->deleteFileByHash($fileHash);
+    //true || false
 } catch (Exception $e) {
     print_r($e->getCode());
-    print_r($e->getMessage());
+    print_r($e->getMessage());die;
 }
 
 ```
